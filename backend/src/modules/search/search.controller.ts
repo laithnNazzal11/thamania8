@@ -1,10 +1,12 @@
-import { Controller, Get, Query, HttpStatus, HttpException } from '@nestjs/common';
+import { Controller, Get, Query, HttpStatus, HttpException, Logger } from '@nestjs/common';
 import { SearchService } from './search.service';
 import { SearchQueryDto } from '../../common/dto/search.dto';
 import { PodcastEntity } from '../../common/entities/podcast.entity';
 
 @Controller('search')
 export class SearchController {
+  private readonly logger = new Logger(SearchController.name);
+
   constructor(private readonly searchService: SearchService) {}
 
   @Get()
@@ -14,15 +16,33 @@ export class SearchController {
     count: number;
     searchTerm: string;
   }> {
+    this.logger.log(`Search request: ${JSON.stringify(searchQuery)}`);
+
     try {
+      // Validate search term
       if (!searchQuery.term || searchQuery.term.trim().length === 0) {
         throw new HttpException(
-          'Search term is required',
-          HttpStatus.BAD_REQUEST
+          {
+            message: 'Search term is required',
+            details: 'Please provide a valid search term',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (searchQuery.term.trim().length < 2) {
+        throw new HttpException(
+          {
+            message: 'Search term too short',
+            details: 'Search term must be at least 2 characters long',
+          },
+          HttpStatus.BAD_REQUEST,
         );
       }
 
       const results = await this.searchService.searchAndStore(searchQuery);
+
+      this.logger.log(`Search completed: ${results.length} results found`);
 
       return {
         success: true,
@@ -31,13 +51,18 @@ export class SearchController {
         searchTerm: searchQuery.term,
       };
     } catch (error) {
+      this.logger.error(`Search error: ${error.message}`, error.stack);
+      
       if (error instanceof HttpException) {
         throw error;
       }
 
       throw new HttpException(
-        'Internal server error during search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        {
+          message: 'Search failed',
+          details: 'An error occurred while searching. Please try again.',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
