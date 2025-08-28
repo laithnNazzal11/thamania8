@@ -81,7 +81,7 @@ export default function HomePage() {
           <SearchResults 
             podcasts={podcasts} 
             loading={loading} 
-            error={error}
+            error={error || ""}
             searchTerm={searchTerm}
           />
         ) : (
