@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ExternalLinkIcon, CalendarIcon, UserIcon, TagIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, CalendarIcon, UserIcon, TagIcon } from '@heroicons/react/24/outline';
 import { Podcast } from '@/types';
 import { cn, formatDate, truncateText, getArtworkUrl } from '@/lib/utils';
 
@@ -52,7 +52,7 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
               onClick={handleViewInItunes}
               className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white rounded-full p-3 shadow-lg hover:shadow-xl"
             >
-              <ExternalLinkIcon className="h-6 w-6 text-blue-600" />
+              <ArrowTopRightOnSquareIcon className="h-6 w-6 text-blue-600" />
             </button>
           </div>
         )}
