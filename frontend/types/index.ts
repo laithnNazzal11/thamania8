@@ -12,9 +12,9 @@ export interface Podcast {
   country?: string;
   kind?: string;
   track_count?: number;
-  search_term: string;
-  created_at: string;
-  updated_at: string;
+  search_term?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface SearchResponse {

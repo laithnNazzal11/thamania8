@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { ArrowTopRightOnSquareIcon, CalendarIcon, UserIcon, TagIcon } from '@heroicons/react/24/outline';
 import { Podcast } from '@/types';
-import { cn, formatDate, truncateText, getArtworkUrl } from '@/lib/utils';
+import { cn, formatDate, truncateText } from '@/lib/utils';
 
 interface PodcastCardProps {
   podcast: Podcast;

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Podcast } from '@/types';
-import { ApiService } from '@/lib/api';
+import { apiService } from '@/lib/api';
 import SearchForm from '@/components/SearchForm';
 import SearchResults from '@/components/SearchResults';
 
@@ -38,8 +38,8 @@ export default function SearchPage() {
     router.replace(url.pathname + url.search);
 
     try {
-      const response = await ApiService.searchPodcasts({ term });
-      setPodcasts(response.data);
+      const response = await apiService.searchPodcasts(term);
+      setPodcasts(response.results);
     } catch (err: any) {
       setError(err.message || 'Failed to search podcasts');
       setPodcasts([]);

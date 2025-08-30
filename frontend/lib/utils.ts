@@ -46,7 +46,7 @@ export function truncateText(text: string | undefined, maxLength: number): strin
   return text.slice(0, maxLength) + '...';
 }
 
-export function getArtworkUrl(podcast: any, size: 'small' | 'large' = 'small'): string {
+export function getArtworkUrl(podcast: Record<string, unknown>, size: 'small' | 'large' = 'small'): string {
   const url = size === 'large' ? podcast.artwork_url_600 : podcast.artwork_url_100;
-  return url || '/placeholder-podcast.jpg';
+  return (url as string) || '/placeholder-podcast.jpg';
 }

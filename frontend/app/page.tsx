@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Podcast } from '@/types';
-import { ApiService } from '@/lib/api';
+import { apiService } from '@/lib/api';
 import SearchForm from '@/components/SearchForm';
 import SearchResults from '@/components/SearchResults';
 
@@ -12,7 +12,7 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [hasSearched, setHasSearched] = useState(false);
-  const [popularTerms, setPopularTerms] = useState<string[]>([]);
+  // Popular terms functionality not implemented in this version
   const [trendingPodcasts, setTrendingPodcasts] = useState<Podcast[]>([]);
 
   const handleSearch = async (term: string) => {
@@ -22,10 +22,10 @@ export default function HomePage() {
     setHasSearched(true);
 
     try {
-      const response = await ApiService.searchPodcasts({ term });
-      setPodcasts(response.data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to search podcasts');
+      const response = await apiService.searchPodcasts(term);
+      setPodcasts(response.results);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to search podcasts');
       setPodcasts([]);
     } finally {
       setLoading(false);
@@ -36,21 +36,12 @@ export default function HomePage() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        // Load recent searches
-        const searchHistory = await ApiService.getSearchHistory();
-        if (searchHistory.data.length > 0) {
-          setPodcasts(searchHistory.data.slice(0, 12));
-        }
-
-        // Load popular terms
-        const popularResponse = await ApiService.getPopularTerms();
-        if (popularResponse.data.length > 0) {
-          setPopularTerms(popularResponse.data.slice(0, 6).map(item => item.search_term));
-        }
+        // Load recent searches and popular terms - not implemented in free version
+        // Using trending technology podcasts as default content
 
         // Load trending content by searching for "technology"
-        const trendingResponse = await ApiService.searchPodcasts({ term: 'technology', limit: 6 });
-        setTrendingPodcasts(trendingResponse.data);
+        const trendingResponse = await apiService.searchPodcasts('technology', 6);
+        setTrendingPodcasts(trendingResponse.results);
       } catch (err) {
         console.error('Failed to load initial data:', err);
       }

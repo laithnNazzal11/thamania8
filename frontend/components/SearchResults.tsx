@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { Podcast } from '@/types';
-import PodcastCard from './PodcastCard';
+// import PodcastCard from './PodcastCard'; // Unused in current implementation
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 interface SearchResultsProps {
@@ -109,14 +109,14 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
           <div className="text-6xl mb-4">🔍</div>
           <h3 className="text-lg font-semibold text-white mb-2">No Results Found</h3>
           <p className="text-gray-300 mb-4">
-            No podcasts found for "{searchTerm}". Try a different search term.
+            No podcasts found for &quot;{searchTerm}&quot;. Try a different search term.
           </p>
           <div className="text-sm text-gray-400">
             <p>Try searching for:</p>
             <ul className="mt-2 space-y-1 text-left">
-              <li>• Podcast names (e.g., "The Daily")</li>
-              <li>• Artist names (e.g., "Joe Rogan")</li>
-              <li>• Topics (e.g., "Technology", "Comedy")</li>
+              <li>• Podcast names (e.g., &quot;The Daily&quot;)</li>
+              <li>• Artist names (e.g., &quot;Joe Rogan&quot;)</li>
+              <li>• Topics (e.g., &quot;Technology&quot;, &quot;Comedy&quot;)</li>
             </ul>
           </div>
         </div>
@@ -245,7 +245,7 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
                 className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4" 
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {topPodcasts.map((podcast, index) => (
+                {topPodcasts.map((podcast) => (
                   <div key={podcast.id} className="flex-shrink-0 w-[200px]">
                     <div className="group cursor-pointer">
                       <div className="relative aspect-square rounded-xl overflow-hidden mb-3">
@@ -385,7 +385,7 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
                         {episodesLayout === 'grid' ? (
               /* Grid Layout - 3 items per row with same design as scroll */
               <div className="grid grid-cols-3 gap-6">
-                {topEpisodes.map((podcast, index) => {
+                {topEpisodes.map((podcast) => {
                   // Same background colors as horizontal scroll
                   const backgroundColors = [
                     '#211b2b',  // Pink/Purple like first card
@@ -550,7 +550,7 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
                 className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4" 
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {topEpisodes.map((podcast, index) => {
+                {topEpisodes.map((podcast) => {
                                     // Different background colors for each card - using exact hex colors
 
                   const bgColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];

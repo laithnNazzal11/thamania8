@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "vercel": "vercel",
+    "vercel:prod": "vercel --prod",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

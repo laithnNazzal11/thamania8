@@ -1,90 +1,71 @@
-import axios, { AxiosError } from 'axios';
-import { SearchResponse, SearchQuery, PopularTerm } from '@/types';
-import toast from 'react-hot-toast';
+// API Service for Vercel deployment
+export interface PodcastResult {
+  id: string;
+  track_id: number;
+  track_name: string;
+  artist_name: string;
+  description: string;
+  primary_genre_name: string;
+  artwork_url_100: string;
+  artwork_url_600: string;
+  track_view_url: string;
+  release_date: string;
+  country: string;
+  kind: string;
+  track_count: number;
+}
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+export interface SearchResponse {
+  results: PodcastResult[];
+  resultCount: number;
+  searchTerm: string;
+}
 
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+class ApiService {
+  private baseURL: string;
 
-export class ApiService {
-  private static handleApiError(error: unknown, defaultMessage: string): never {
-    if (error instanceof AxiosError) {
-      if (error.response?.data?.message) {
-        const errorMessage = error.response.data.message;
-        const details = error.response.data.details;
-        toast.error(details || errorMessage);
-        throw new Error(errorMessage);
-      } else if (error.message === 'Network Error') {
-        const message = 'Unable to connect to server. Please check your connection.';
-        toast.error(message);
-        throw new Error(message);
-      } else if (error.code === 'ECONNABORTED') {
-        const message = 'Request timeout. Please try again.';
-        toast.error(message);
-        throw new Error(message);
+  constructor() {
+    // Use relative URLs for Vercel deployment
+    this.baseURL = process.env.NODE_ENV === 'production' 
+      ? '' // Same domain in production
+      : 'http://localhost:3000'; // Local development
+  }
+
+  async searchPodcasts(searchTerm: string, limit: number = 50): Promise<SearchResponse> {
+    try {
+      const response = await fetch(
+        `${this.baseURL}/api/search?term=${encodeURIComponent(searchTerm)}&limit=${limit}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
-    }
-    
-    console.error('API Error:', error);
-    toast.error(defaultMessage);
-    throw new Error(defaultMessage);
-  }
 
-  static async searchPodcasts(query: SearchQuery): Promise<SearchResponse> {
-    try {
-      // Validate query on client side
-      if (!query.term || query.term.trim().length < 2) {
-        const message = 'Search term must be at least 2 characters long';
-        toast.error(message);
-        throw new Error(message);
-      }
-
-      toast.loading('Searching iTunes...', { id: 'search' });
-      
-      const response = await api.get('/search', {
-        params: query,
-      });
-      
-      toast.success(`Found ${response.data.count} results!`, { id: 'search' });
-      return response.data;
+      const data = await response.json();
+      return data;
     } catch (error) {
-      toast.dismiss('search');
-      this.handleApiError(error, 'Failed to search podcasts. Please try again.');
+      console.error('Search failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'Search failed');
     }
   }
 
-  static async getSearchHistory(term?: string): Promise<SearchResponse> {
+  async checkHealth(): Promise<Record<string, unknown>> {
     try {
-      const response = await api.get('/search/history', {
-        params: term ? { term } : {},
-      });
-      return response.data;
+      const response = await fetch(`${this.baseURL}/api/health`);
+      return await response.json();
     } catch (error) {
-      this.handleApiError(error, 'Failed to fetch search history.');
-    }
-  }
-
-  static async getPopularTerms(): Promise<{ success: boolean; data: PopularTerm[] }> {
-    try {
-      const response = await api.get('/search/popular-terms');
-      return response.data;
-    } catch (error) {
-      this.handleApiError(error, 'Failed to fetch popular search terms.');
-    }
-  }
-
-  static async checkHealth(): Promise<{ status: string; timestamp: string }> {
-    try {
-      const response = await api.get('/health');
-      return response.data;
-    } catch (error) {
-      this.handleApiError(error, 'API is not available.');
+      console.error('Health check failed:', error);
+      throw error;
     }
   }
 }
+
+export const apiService = new ApiService();
+export default apiService;
