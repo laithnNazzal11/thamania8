@@ -22,6 +22,12 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
   const [isGridLayout, setIsGridLayout] = useState(false);
   const [episodesLayout, setEpisodesLayout] = useState('horizontal'); // 'horizontal', 'grid', 'list', 'compact'
 
+
+  const backgroundColors = [
+    '#211b2b',  // Pink/Purple like first card
+    '#2d2b36',  // Orange/Yellow like second card  
+    '#22202c',  // Teal/Blue like third card
+  ];
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -546,11 +552,7 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
               >
                 {topEpisodes.map((podcast, index) => {
                                     // Different background colors for each card - using exact hex colors
-                  const backgroundColors = [
-                    '#211b2b',  // Pink/Purple like first card
-                    '#2d2b36',  // Orange/Yellow like second card  
-                    '#22202c',  // Teal/Blue like third card
-                  ];
+
                   const bgColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
                   
                   return (
