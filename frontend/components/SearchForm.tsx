@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 
@@ -12,11 +13,38 @@ interface SearchFormProps {
 
 export default function SearchForm({ onSearch, loading = false, initialValue = '' }: SearchFormProps) {
   const [searchTerm, setSearchTerm] = useState(initialValue);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Update searchTerm when initialValue changes
+  useEffect(() => {
+    setSearchTerm(initialValue);
+  }, [initialValue]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      onSearch(searchTerm.trim());
+      // If we're not on the search page, navigate to it with the search term
+      if (pathname !== '/search') {
+        router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+      } else {
+        // If we're already on the search page, just perform the search
+        onSearch(searchTerm.trim());
+      }
+    }
+  };
+
+  const handleInputFocus = () => {
+    // Navigate to search page if we're not already there
+    if (pathname !== '/search') {
+      router.push('/search');
+    }
+  };
+
+  const handleInputClick = () => {
+    // Navigate to search page if we're not already there
+    if (pathname !== '/search') {
+      router.push('/search');
     }
   };
 
@@ -28,6 +56,8 @@ export default function SearchForm({ onSearch, loading = false, initialValue = '
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={handleInputFocus}
+            onClick={handleInputClick}
             placeholder="Search through over 70 million podcasts and episodes..."
             className={cn(
               "w-full h-8 px-4 pl-10 text-sm rounded-2xl border border-gray-600",

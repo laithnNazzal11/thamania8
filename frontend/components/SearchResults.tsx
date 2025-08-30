@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useState, useEffect } from 'react';
 import { Podcast } from '@/types';
 import PodcastCard from './PodcastCard';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
@@ -12,6 +13,44 @@ interface SearchResultsProps {
 }
 
 export default function SearchResults({ podcasts, loading, error, searchTerm }: SearchResultsProps) {
+  const podcastsScrollRef = useRef<HTMLDivElement>(null);
+  const episodesScrollRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const episodesDropdownRef = useRef<HTMLDivElement>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showEpisodesDropdown, setShowEpisodesDropdown] = useState(false);
+  const [isGridLayout, setIsGridLayout] = useState(false);
+  const [episodesLayout, setEpisodesLayout] = useState('horizontal'); // 'horizontal', 'grid', 'list', 'compact'
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+      if (episodesDropdownRef.current && !episodesDropdownRef.current.contains(event.target as Node)) {
+        setShowEpisodesDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const scrollLeft = (ref: React.RefObject<HTMLDivElement | null>) => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: -320, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = (ref: React.RefObject<HTMLDivElement | null>) => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: 320, behavior: 'smooth' });
+    }
+  };
+
   if (loading) {
     return (
       <div className="w-full">
@@ -79,26 +118,426 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
     );
   }
 
+  // Split podcasts into different categories for display
+  const topPodcasts = podcasts.slice(0, 12); // First 12 as top podcasts
+  const topEpisodes = podcasts.slice(12, 24); // Next 12 as top episodes
+
   return (
-    <div className="w-full">
-      {/* Results header */}
-      {searchTerm && podcasts.length > 0 && (
-        <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-2">
-            Search Results
+    <div className="w-full space-y-12">
+      {/* Top Podcasts Section */}
+      {topPodcasts.length > 0 && (
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-white">
+              Top podcasts for {searchTerm}
           </h2>
-          <p className="text-gray-300">
-            Found {podcasts.length} result{podcasts.length !== 1 ? 's' : ''} for "{searchTerm}"
+            <div className="flex items-center space-x-4">
+              {!isGridLayout && (
+                <>
+                  <button 
+                    onClick={() => scrollLeft(podcastsScrollRef)}
+                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    aria-label="Scroll left"
+                  >
+                    <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button 
+                    onClick={() => scrollRight(podcastsScrollRef)}
+                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    aria-label="Scroll right"
+                  >
+                    <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </>
+              )}
+              <div className="relative" ref={dropdownRef}>
+                <button 
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                  aria-label="More options"
+                >
+                  <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                  </svg>
+                </button>
+                
+                {/* Dropdown Menu */}
+                {showDropdown && (
+                  <div 
+                    className="absolute right-0 top-full mt-2 rounded-lg shadow-lg z-10 group"
+                    style={{
+                      width: '200px',
+                      height: '42.5px',
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 rounded-lg transition-all duration-200"
+                      style={{
+                        background: 'linear-gradient(135deg, #633f80 0%, #454080 100%)'
+                      }}
+                    />
+                    <div 
+                      className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200"
+                      style={{
+                        background: 'linear-gradient(135deg, #7b4fa3 0%, #5a4fa3 100%)'
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        setIsGridLayout(!isGridLayout);
+                        setShowDropdown(false);
+                      }}
+                      className="relative w-full h-full text-left px-4 text-sm text-white transition-all duration-200 rounded-lg flex items-center z-10 cursor-pointer"
+                    >
+                      Switch layout to {isGridLayout ? 'Scroll' : 'Grid'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          {/* Podcast cards layout */}
+          <div className="relative">
+            {isGridLayout ? (
+              /* Grid Layout */
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                {topPodcasts.map((podcast) => (
+                  <div key={podcast.id} className="group cursor-pointer">
+                    <div className="relative aspect-square rounded-xl overflow-hidden mb-3">
+                      {podcast.artwork_url_600 ? (
+                        <img
+                          src={podcast.artwork_url_600}
+                          alt={podcast.track_name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                          <span className="text-white text-xl font-bold">
+                            {podcast.track_name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <h3 className="text-white font-semibold text-sm mb-1 truncate">
+                      {podcast.track_name}
+                    </h3>
+                    <p className="text-gray-400 text-xs truncate">
+                      {podcast.artist_name}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Horizontal scrolling layout */
+              <div 
+                ref={podcastsScrollRef}
+                className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4" 
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {topPodcasts.map((podcast, index) => (
+                  <div key={podcast.id} className="flex-shrink-0 w-[200px]">
+                    <div className="group cursor-pointer">
+                      <div className="relative aspect-square rounded-xl overflow-hidden mb-3">
+                        {podcast.artwork_url_600 ? (
+                          <img
+                            src={podcast.artwork_url_600}
+                            alt={podcast.track_name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <span className="text-white text-xl font-bold">
+                              {podcast.track_name.charAt(0)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <h3 className="text-white font-semibold text-sm mb-1 truncate">
+                        {podcast.track_name}
+                      </h3>
+                      <p className="text-gray-400 text-xs truncate">
+                        {podcast.artist_name}
           </p>
         </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
       )}
 
-      {/* Results grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {podcasts.map((podcast) => (
-          <PodcastCard key={podcast.id} podcast={podcast} />
+      {/* Top Episodes Section */}
+      {topEpisodes.length > 0 && (
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-white">
+              Top episodes for {searchTerm}
+            </h2>
+            <div className="flex items-center space-x-4">
+              {episodesLayout === 'horizontal' && (
+                <>
+                  <button 
+                    onClick={() => scrollLeft(episodesScrollRef)}
+                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    aria-label="Scroll left"
+                  >
+                    <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button 
+                    onClick={() => scrollRight(episodesScrollRef)}
+                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    aria-label="Scroll right"
+                  >
+                    <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </>
+              )}
+              <div className="relative" ref={episodesDropdownRef}>
+                <button 
+                  onClick={() => setShowEpisodesDropdown(!showEpisodesDropdown)}
+                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                  aria-label="More options"
+                >
+                  <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                  </svg>
+                </button>
+                
+                {/* Episodes Dropdown Menu */}
+                {showEpisodesDropdown && (
+                  <div 
+                    className="absolute right-0 top-full mt-2 rounded-lg shadow-lg z-10"
+                    style={{
+                      width: '200px',
+                      background: 'linear-gradient(135deg, #633f80 0%, #454080 100%)'
+                    }}
+                  >
+                    <div className="py-2">
+                      {episodesLayout !== 'grid' && (
+                        <button
+                          onClick={() => {
+                            setEpisodesLayout('grid');
+                            setShowEpisodesDropdown(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-white hover:bg-black/20 hover:brightness-110 transition-all duration-200 cursor-pointer"
+                        >
+                          Switch layout to Grid
+                        </button>
+                      )}
+                      {episodesLayout !== 'list' && (
+                        <button
+                          onClick={() => {
+                            setEpisodesLayout('list');
+                            setShowEpisodesDropdown(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-white hover:bg-black/20 hover:brightness-110 transition-all duration-200 cursor-pointer"
+                        >
+                          Switch layout to List
+                        </button>
+                      )}
+                      {episodesLayout !== 'compact' && (
+                        <button
+                          onClick={() => {
+                            setEpisodesLayout('compact');
+                            setShowEpisodesDropdown(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-white hover:bg-black/20 hover:brightness-110 transition-all duration-200 cursor-pointer"
+                        >
+                          Switch layout to Compact
+                        </button>
+                      )}
+                      {episodesLayout !== 'horizontal' && (
+                        <button
+                          onClick={() => {
+                            setEpisodesLayout('horizontal');
+                            setShowEpisodesDropdown(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-white hover:bg-black/20 hover:brightness-110 transition-all duration-200 cursor-pointer"
+                        >
+                          Switch layout to Scroll
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+                    {/* Episode cards layout */}
+          <div className="relative">
+            {episodesLayout === 'grid' ? (
+              /* Grid Layout */
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {topEpisodes.map((podcast) => (
+                  <div key={`episode-grid-${podcast.id}`} className="group cursor-pointer bg-[#1a1a2e]/50 rounded-xl overflow-hidden hover:bg-[#1a1a2e]/70 transition-all duration-300">
+                    <div className="relative w-full h-48 overflow-hidden">
+                      {podcast.artwork_url_600 ? (
+                        <img
+                          src={podcast.artwork_url_600}
+                          alt={podcast.track_name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                          <span className="text-white text-2xl font-bold">
+                            {podcast.track_name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                      <div className="absolute top-3 right-3">
+                        <button className="p-1 bg-black/40 rounded-full hover:bg-black/60 transition-colors">
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-white font-semibold text-base mb-2 line-clamp-2 leading-tight">
+                        {podcast.track_name}
+                      </h3>
+                      <p className="text-gray-400 text-sm mb-3 truncate">
+                        {podcast.artist_name}
+                      </p>
+                      <div className="flex items-center justify-between text-gray-500 text-sm">
+                        <span>Feb 6</span>
+                        <span>31min</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : episodesLayout === 'list' ? (
+              /* List Layout */
+              <div className="space-y-6">
+                {topEpisodes.map((podcast) => (
+                  <div key={`episode-list-${podcast.id}`} className="flex items-start space-x-4 group cursor-pointer">
+                    {/* Play Button */}
+                    <button className="flex-shrink-0 w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-105 transition-transform duration-200 group-hover:shadow-lg">
+                      <svg className="w-5 h-5 text-black ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </button>
+                    
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 pr-4">
+                          <h3 className="text-white font-semibold text-lg mb-2 line-clamp-1">
+                            {podcast.track_name}
+                          </h3>
+                          <p className="text-gray-300 text-base mb-2 truncate">
+                            {podcast.artist_name}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 mb-3">
+                            في هذه الحلقة من #بودكاست_فنجان، ٢ سؤال عن تطوير استخدام الذكاء الاصطناعي في النزاعات السياسية وحتى استخدام مبدأ ويس الحب لا في قتل من يحبونهم في سلوك غريب بحالة محمد التميمي. الحلقة ١٠ من الموسم الثاني على StreamYard من تقديم Apple Podcast تقديم كما يوضح كيفية معرفة ترايك عن الخلافات بالخلافات أو قضيتك مع Phil...
+                          </p>
+                          <div className="text-gray-500 text-sm">
+                            Feb 6, 2023 • 31min
+                          </div>
+                        </div>
+                        
+                        {/* 3 Dots Menu */}
+                        <button className="flex-shrink-0 p-2 hover:bg-gray-800 rounded-lg transition-colors">
+                          <svg className="w-5 h-5 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : episodesLayout === 'compact' ? (
+              /* Compact Layout */
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {topEpisodes.map((podcast) => (
+                  <div key={`episode-compact-${podcast.id}`} className="flex items-center space-x-3 p-3 bg-gray-800/20 rounded-lg hover:bg-gray-800/40 transition-colors cursor-pointer">
+                    <div className="relative w-12 h-12 rounded-md overflow-hidden flex-shrink-0">
+                      {podcast.artwork_url_600 ? (
+                        <img
+                          src={podcast.artwork_url_600}
+                          alt={podcast.track_name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">
+                            {podcast.track_name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-white font-medium text-sm mb-1 truncate">
+                        {podcast.track_name}
+                      </h3>
+                      <p className="text-gray-400 text-xs truncate">
+                        {podcast.artist_name} • Jan 9 • 12min
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Horizontal scrolling layout */
+              <div 
+                ref={episodesScrollRef}
+                className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4" 
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {topEpisodes.map((podcast, index) => (
+                  <div key={`episode-horizontal-${podcast.id}`} className="flex-shrink-0 w-[280px]">
+                    <div className="group cursor-pointer">
+                      <div className="flex space-x-4">
+                        <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                          {podcast.artwork_url_600 ? (
+                            <img
+                              src={podcast.artwork_url_600}
+                              alt={podcast.track_name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">
+                                {podcast.track_name.charAt(0)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-white font-semibold text-sm mb-1 line-clamp-2">
+                            {podcast.track_name}
+                          </h3>
+                          <p className="text-gray-400 text-xs mb-2 truncate">
+                            {podcast.artist_name}
+                          </p>
+                          <div className="flex items-center space-x-2 text-gray-500 text-xs">
+                            <span>Jan 9</span>
+                            <span>•</span>
+                            <span>12min</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
         ))}
       </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Show more results hint */}
       {podcasts.length >= 50 && (
