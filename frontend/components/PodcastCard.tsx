@@ -20,9 +20,9 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl border border-gray-700 hover:border-gray-600 transition-all duration-300 overflow-hidden group">
       {/* Artwork */}
-      <div className="relative aspect-square bg-gray-100">
+      <div className="relative aspect-square bg-gray-700">
         {!imageError && podcast.artwork_url_600 ? (
           <Image
             src={podcast.artwork_url_600}
@@ -33,14 +33,14 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700">
             <div className="text-center p-4">
-              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
+              <div className="w-16 h-16 bg-gray-900/50 rounded-full flex items-center justify-center mx-auto mb-2">
                 <span className="text-white text-2xl font-bold">
                   {podcast.track_name.charAt(0).toUpperCase()}
                 </span>
               </div>
-              <p className="text-xs text-gray-500">No Image</p>
+              <p className="text-xs text-gray-300">No Image</p>
             </div>
           </div>
         )}
@@ -61,19 +61,19 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
       {/* Content */}
       <div className="p-6">
         {/* Title */}
-        <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2 leading-tight">
+        <h3 className="font-bold text-lg text-white mb-2 line-clamp-2 leading-tight">
           {podcast.track_name}
         </h3>
 
         {/* Artist */}
-        <div className="flex items-center text-gray-600 mb-3">
+        <div className="flex items-center text-gray-300 mb-3">
           <UserIcon className="h-4 w-4 mr-2 flex-shrink-0" />
           <span className="text-sm font-medium truncate">{podcast.artist_name}</span>
         </div>
 
         {/* Description */}
         {podcast.description && (
-          <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+          <p className="text-gray-400 text-sm mb-4 line-clamp-3 leading-relaxed">
             {truncateText(podcast.description, 150)}
           </p>
         )}
@@ -82,7 +82,7 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
         <div className="space-y-2">
           {/* Genre */}
           {podcast.primary_genre_name && (
-            <div className="flex items-center text-gray-500 text-xs">
+            <div className="flex items-center text-gray-400 text-xs">
               <TagIcon className="h-3 w-3 mr-1 flex-shrink-0" />
               <span className="truncate">{podcast.primary_genre_name}</span>
             </div>
@@ -90,7 +90,7 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
 
           {/* Release Date */}
           {podcast.release_date && (
-            <div className="flex items-center text-gray-500 text-xs">
+            <div className="flex items-center text-gray-400 text-xs">
               <CalendarIcon className="h-3 w-3 mr-1 flex-shrink-0" />
               <span>{formatDate(podcast.release_date)}</span>
             </div>
@@ -98,7 +98,7 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
 
           {/* Track Count */}
           {podcast.track_count && (
-            <div className="text-gray-500 text-xs">
+            <div className="text-gray-400 text-xs">
               {podcast.track_count} episodes
             </div>
           )}
@@ -109,9 +109,9 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
           <button
             onClick={handleViewInItunes}
             className={cn(
-              "mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium",
-              "hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200",
-              "transition-all duration-200"
+              "mt-4 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg text-sm font-medium",
+              "hover:from-blue-700 hover:to-purple-700 focus:from-blue-700 focus:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-400/50",
+              "transition-all duration-200 shadow-lg hover:shadow-xl"
             )}
           >
             View in iTunes
