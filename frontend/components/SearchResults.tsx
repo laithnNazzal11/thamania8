@@ -386,7 +386,7 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
                     '#2d2b36',  // Orange/Yellow like second card  
                     '#22202c',  // Teal/Blue like third card
                   ];
-                  const bgColor = backgroundColors[index % backgroundColors.length];
+                  const bgColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
                   
                   return (
                   <div key={`episode-grid-${podcast.id}`} className="flex-shrink-0">
@@ -551,7 +551,7 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
                     '#2d2b36',  // Orange/Yellow like second card  
                     '#22202c',  // Teal/Blue like third card
                   ];
-                  const bgColor = backgroundColors[index % backgroundColors.length];
+                  const bgColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
                   
                   return (
                   <div key={`episode-horizontal-${podcast.id}`} className="flex-shrink-0 w-[320px]">
