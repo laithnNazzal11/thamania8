@@ -376,59 +376,106 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
           
                     {/* Episode cards layout */}
           <div className="relative">
-            {episodesLayout === 'grid' ? (
-              /* Grid Layout */
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {topEpisodes.map((podcast) => (
-                  <div key={`episode-grid-${podcast.id}`} className="group cursor-pointer bg-[#1a1a2e]/50 rounded-xl overflow-hidden hover:bg-[#1a1a2e]/70 transition-all duration-300">
-                    <div className="relative w-full h-48 overflow-hidden">
-                      {podcast.artwork_url_600 ? (
-                        <img
-                          src={podcast.artwork_url_600}
-                          alt={podcast.track_name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                          <span className="text-white text-2xl font-bold">
-                            {podcast.track_name.charAt(0)}
-                          </span>
+                        {episodesLayout === 'grid' ? (
+              /* Grid Layout - 3 items per row with same design as scroll */
+              <div className="grid grid-cols-3 gap-6">
+                {topEpisodes.map((podcast, index) => {
+                  // Same background colors as horizontal scroll
+                  const backgroundColors = [
+                    '#211b2b',  // Pink/Purple like first card
+                    '#2d2b36',  // Orange/Yellow like second card  
+                    '#22202c',  // Teal/Blue like third card
+                  ];
+                  const bgColor = backgroundColors[index % backgroundColors.length];
+                  
+                  return (
+                  <div key={`episode-grid-${podcast.id}`} className="flex-shrink-0">
+                    <div 
+                      className="relative group cursor-pointer rounded-xl hover:brightness-125 hover:shadow-xl transition-all duration-300 shadow-lg overflow-hidden h-24"
+                      style={{ backgroundColor: bgColor }}
+                    >
+                      <div className="flex space-x-4 p-4 h-full">
+                        {/* Square image with play button overlay */}
+                        <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 group/image">
+                          {podcast.artwork_url_600 ? (
+                            <img
+                              src={podcast.artwork_url_600}
+                              alt={podcast.track_name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">
+                                {podcast.track_name.charAt(0)}
+                              </span>
+                            </div>
+                          )}
+                          {/* Play Button Overlay - appears on image hover only */}
+                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-200">
+                            <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200">
+                              <svg className="w-4 h-4 text-black ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
-                      )}
+                        {/* Content area */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                          <h3 className="text-white font-semibold text-sm mb-1 line-clamp-1">
+                            {podcast.track_name}
+                          </h3>
+                          <p className="text-gray-400 text-xs mb-1 truncate">
+                            {podcast.artist_name}
+                          </p>
+                          <div className="flex items-center space-x-2 text-gray-500 text-xs">
+                            <span>Jan 9</span>
+                            <span>•</span>
+                            <span>12min</span>
+                          </div>
+                        </div>
+                      </div>
+                      {/* 3 Dots Menu - Always Visible */}
                       <div className="absolute top-3 right-3">
-                        <button className="p-1 bg-black/40 rounded-full hover:bg-black/60 transition-colors">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button className="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                           </svg>
                         </button>
                       </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="text-white font-semibold text-base mb-2 line-clamp-2 leading-tight">
-                        {podcast.track_name}
-                      </h3>
-                      <p className="text-gray-400 text-sm mb-3 truncate">
-                        {podcast.artist_name}
-                      </p>
-                      <div className="flex items-center justify-between text-gray-500 text-sm">
-                        <span>Feb 6</span>
-                        <span>31min</span>
-                      </div>
-                    </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             ) : episodesLayout === 'list' ? (
               /* List Layout */
               <div className="space-y-6">
                 {topEpisodes.map((podcast) => (
                   <div key={`episode-list-${podcast.id}`} className="flex items-start space-x-4 group cursor-pointer">
-                    {/* Play Button */}
-                    <button className="flex-shrink-0 w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-105 transition-transform duration-200 group-hover:shadow-lg">
-                      <svg className="w-5 h-5 text-black ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </button>
+                    {/* Podcast Image with Hover Play Button */}
+                    <div className="relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden">
+                      {podcast.artwork_url_600 ? (
+                        <img
+                          src={podcast.artwork_url_600}
+                          alt={podcast.track_name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                          <span className="text-white text-lg font-bold">
+                            {podcast.track_name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                      {/* Play Button Overlay - appears on hover */}
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200">
+                          <svg className="w-4 h-4 text-black ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                     
                     {/* Content */}
                     <div className="flex-1 min-w-0">
@@ -488,20 +535,33 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
                       </p>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
+        ))}
+      </div>
+                        ) : (
               /* Horizontal scrolling layout */
               <div 
                 ref={episodesScrollRef}
                 className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4" 
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {topEpisodes.map((podcast, index) => (
-                  <div key={`episode-horizontal-${podcast.id}`} className="flex-shrink-0 w-[280px]">
-                    <div className="group cursor-pointer">
-                      <div className="flex space-x-4">
-                        <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                {topEpisodes.map((podcast, index) => {
+                                    // Different background colors for each card - using exact hex colors
+                  const backgroundColors = [
+                    '#211b2b',  // Pink/Purple like first card
+                    '#2d2b36',  // Orange/Yellow like second card  
+                    '#22202c',  // Teal/Blue like third card
+                  ];
+                  const bgColor = backgroundColors[index % backgroundColors.length];
+                  
+                  return (
+                  <div key={`episode-horizontal-${podcast.id}`} className="flex-shrink-0 w-[320px]">
+                    <div 
+                      className="relative group cursor-pointer rounded-xl hover:brightness-125 hover:shadow-xl transition-all duration-300 shadow-lg overflow-hidden h-24"
+                      style={{ backgroundColor: bgColor }}
+                    >
+                      <div className="flex space-x-4 p-4 h-full">
+                        {/* Square image with play button overlay */}
+                        <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 group/image">
                           {podcast.artwork_url_600 ? (
                             <img
                               src={podcast.artwork_url_600}
@@ -515,12 +575,21 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
                               </span>
                             </div>
                           )}
+                          {/* Play Button Overlay - appears on image hover only */}
+                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-200">
+                            <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-200">
+                              <svg className="w-4 h-4 text-black ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-white font-semibold text-sm mb-1 line-clamp-2">
+                        {/* Content area */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                          <h3 className="text-white font-semibold text-sm mb-1 line-clamp-1">
                             {podcast.track_name}
                           </h3>
-                          <p className="text-gray-400 text-xs mb-2 truncate">
+                          <p className="text-gray-400 text-xs mb-1 truncate">
                             {podcast.artist_name}
                           </p>
                           <div className="flex items-center space-x-2 text-gray-500 text-xs">
@@ -530,10 +599,19 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
                           </div>
                         </div>
                       </div>
+                      {/* 3 Dots Menu - Always Visible */}
+                      <div className="absolute top-3 right-3">
+                        <button className="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
-        ))}
-      </div>
+                  );
+                })}
+              </div>
             )}
           </div>
         </section>
