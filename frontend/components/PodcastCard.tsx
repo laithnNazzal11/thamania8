@@ -20,9 +20,9 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
   };
 
   return (
-    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl border border-gray-700 hover:border-gray-600 transition-all duration-300 overflow-hidden group">
+    <div className="bg-[#141523] rounded-xl shadow-lg hover:shadow-xl border border-gray-700 hover:border-gray-600 transition-all duration-300 overflow-hidden group">
       {/* Artwork */}
-      <div className="relative aspect-square bg-gray-700">
+      <div className="relative aspect-square bg-[#141523]">
         {!imageError && podcast.artwork_url_600 ? (
           <Image
             src={podcast.artwork_url_600}
@@ -109,8 +109,8 @@ export default function PodcastCard({ podcast }: PodcastCardProps) {
           <button
             onClick={handleViewInItunes}
             className={cn(
-              "mt-4 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg text-sm font-medium",
-              "hover:from-blue-700 hover:to-purple-700 focus:from-blue-700 focus:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-400/50",
+              "mt-4 w-full bg-[#0A84FF] text-white py-2 px-4 rounded-lg text-sm font-medium",
+              "hover:bg-blue-600 focus:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-[#0A84FF]/50",
               "transition-all duration-200 shadow-lg hover:shadow-xl"
             )}
           >

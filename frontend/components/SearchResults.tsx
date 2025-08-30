@@ -16,15 +16,15 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
     return (
       <div className="w-full">
         <div className="text-center mb-8">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-400 border-t-transparent mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#0A84FF] border-t-transparent mx-auto mb-4"></div>
           <p className="text-gray-300">Searching iTunes...</p>
         </div>
         
         {/* Loading skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, index) => (
-            <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-gray-700 overflow-hidden animate-pulse">
-              <div className="aspect-square bg-gray-700"></div>
+            <div key={index} className="bg-[#141523] rounded-xl shadow-lg border border-gray-700 overflow-hidden animate-pulse">
+              <div className="aspect-square bg-[#141523]"></div>
               <div className="p-6">
                 <div className="h-6 bg-gray-700 rounded mb-2"></div>
                 <div className="h-4 bg-gray-700 rounded mb-3 w-2/3"></div>
@@ -60,7 +60,7 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
   if (podcasts.length === 0 && searchTerm) {
     return (
       <div className="w-full max-w-md mx-auto text-center">
-        <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-8 backdrop-blur-sm">
+        <div className="bg-[#141523] border border-gray-700 rounded-xl p-8">
           <div className="text-6xl mb-4">🔍</div>
           <h3 className="text-lg font-semibold text-white mb-2">No Results Found</h3>
           <p className="text-gray-300 mb-4">
