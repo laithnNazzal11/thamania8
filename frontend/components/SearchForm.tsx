@@ -60,8 +60,8 @@ export default function SearchForm({ onSearch, loading = false, initialValue = '
             onClick={handleInputClick}
             placeholder="Search through over 70 million podcasts and episodes..."
             className={cn(
-              "w-full h-8 px-4 text-sm rounded-2xl border border-gray-600 text-center",
-              "focus:border-[#7b7bef] focus:outline-none",
+              "w-full h-8 px-4 text-sm rounded-lg border border-gray-600 text-center",
+              "focus:border-[#7b7bef] focus:outline-none focus:bg-[#1A1B2E] focus:placeholder-transparent",
               "bg-[#141523] text-white transition-all duration-200",
               "placeholder-gray-400 placeholder:text-center",
               loading && "cursor-not-allowed opacity-50"

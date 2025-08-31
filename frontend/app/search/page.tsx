@@ -53,7 +53,7 @@ export default function SearchPage() {
       {/* Sidebar */}
       <div className="max-w-[219px] w-full bg-[#141523] border-r border-gray-800 flex flex-col">
         {/* Logo */}
-        <div className="p-6">
+        <div className=" px-5 py-6">
           <svg
             width="45"
             height="49.46280991735537"
@@ -83,10 +83,10 @@ export default function SearchPage() {
                 gradientUnits="userSpaceOnUse"
               >
                 <stop offset="0.31" stopColor="#3ADEE6"></stop>
-                <stop offset="0.44" stop-color="#38D8E0"></stop>
-                <stop offset="0.61" stop-color="#33C6CE"></stop>
-                <stop offset="0.82" stop-color="#2BA9B0"></stop>
-                <stop offset="1" stop-color="#21888F"></stop>
+                <stop offset="0.44" stopColor="#38D8E0"></stop>
+                <stop offset="0.61" stopColor="#33C6CE"></stop>
+                <stop offset="0.82" stopColor="#2BA9B0"></stop>
+                <stop offset="1" stopColor="#21888F"></stop>
               </linearGradient>
               <linearGradient
                 id="paint1_linear_0"
@@ -96,11 +96,11 @@ export default function SearchPage() {
                 y2="133.834"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop offset="0.15" stop-color="#9B7DD9"></stop>
-                <stop offset="0.37" stop-color="#7D63B3"></stop>
-                <stop offset="0.57" stop-color="#664F95"></stop>
-                <stop offset="0.75" stop-color="#584283"></stop>
-                <stop offset="0.88" stop-color="#533E7D"></stop>
+                <stop offset="0.15" stopColor="#9B7DD9"></stop>
+                <stop offset="0.37" stopColor="#7D63B3"></stop>
+                <stop offset="0.57" stopColor="#664F95"></stop>
+                <stop offset="0.75" stopColor="#584283"></stop>
+                <stop offset="0.88" stopColor="#533E7D"></stop>
               </linearGradient>
               <radialGradient
                 id="paint2_radial_0"
@@ -110,11 +110,11 @@ export default function SearchPage() {
                 gradientUnits="userSpaceOnUse"
                 gradientTransform="translate(91.39 51.4944) scale(480.67)"
               >
-                <stop offset="0.35" stop-color="#FF78C9"></stop>
-                <stop offset="0.42" stop-color="#FD7ECB"></stop>
-                <stop offset="0.51" stop-color="#F890D1"></stop>
-                <stop offset="0.62" stop-color="#EFAEDB"></stop>
-                <stop offset="0.66" stop-color="#EBBCE0"></stop>
+                <stop offset="0.35" stopColor="#FF78C9"></stop>
+                <stop offset="0.42" stopColor="#FD7ECB"></stop>
+                <stop offset="0.51" stopColor="#F890D1"></stop>
+                <stop offset="0.62" stopColor="#EFAEDB"></stop>
+                <stop offset="0.66" stopColor="#EBBCE0"></stop>
               </radialGradient>
             </defs>
           </svg>
@@ -126,7 +126,7 @@ export default function SearchPage() {
           <div className="space-y-1">
                          <a
                href="/"
-               className="flex items-center space-x-3 px-3 py-2 rounded-lg  hover:text-white hover:bg-gray-800/50"
+               className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
              >
                <div className="w-6 h-6 flex items-center justify-center">
                  <img
@@ -156,14 +156,14 @@ export default function SearchPage() {
           </div>
 
           {/* Your Stuff Section */}
-          <div className="pt-6">
-            <h3 className="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-3 px-3">
+          <div className="pt-1">
+            <h3 className="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1 px-1 text-left">
               YOUR STUFF
             </h3>
                          <div className="space-y-1">
                <a
                  href="#"
-                 className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:text-white hover:bg-gray-800/50"
+                 className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
                >
                  <div className="w-6 h-6 flex items-center justify-center">
                    <img
@@ -178,7 +178,7 @@ export default function SearchPage() {
  
                <a
                  href="#"
-                 className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:text-white hover:bg-gray-800/50"
+                 className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
                >
                  <div className="w-6 h-6 flex items-center justify-center">
                    <img
@@ -193,7 +193,7 @@ export default function SearchPage() {
  
                <a
                  href="#"
-                 className="flex items-center space-x-3 px-3 py-2 rounded-lg  hover:text-white hover:bg-gray-800/50"
+                 className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
                >
                  <div className="w-6 h-6 flex items-center justify-center">
                    <img
@@ -226,7 +226,7 @@ export default function SearchPage() {
       <div className="flex-1 flex flex-col">
         {/* Top Header */}
         <div className="">
-          <div className="px-6 py-4">
+          <div className="px-6 py-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <button onClick={() => router.back()} className="p-2">
@@ -262,7 +262,7 @@ export default function SearchPage() {
               </div>
 
               {/* Centered Search Bar */}
-              <div className="flex-1 mx-4">
+              <div className="flex-1 mx-2">
                 <SearchForm
                   onSearch={handleSearch}
                   loading={loading}
@@ -270,26 +270,16 @@ export default function SearchPage() {
                 />
               </div>
 
-              <div className="flex items-center space-x-4">
-                <button className="bg-[#375e83] hover:bg-[#2d4a6b] text-white px-4 h-8 rounded-lg text-sm font-medium transition-colors">
+              <div className="flex items-center space-x-1">
+                <button className="bg-[#375e83] hover:bg-[#3D6992]  w-16   text-white  h-8 rounded-sm text-sm font-medium transition-colors">
                   Log in
                 </button>
-                <button className="bg-[#375e83] hover:bg-[#2d4a6b] text-white px-4 h-8 rounded-lg text-sm font-medium transition-colors">
+                <button className="bg-[#375e83] hover:bg-[#3D6992]  w-16   text-white  h-8 rounded-sm text-sm font-medium transition-colors">
                   Sign up
                 </button>
                 <button className="p-2 hover:bg-gray-800 rounded-lg">
-                  <svg
-                    className="w-5 h-5 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-                    />
+                  <svg className="w-5 h-5 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                   </svg>
                 </button>
               </div>
@@ -303,7 +293,7 @@ export default function SearchPage() {
             {hasSearched ? (
               <div>
                 {/* Search Header */}
-                <div className="mb-8">
+                {/* <div className="mb-8">
                   <h1 className="text-3xl font-bold text-white mb-2">
                     {searchTerm
                       ? `Search results for "${searchTerm}"`
@@ -315,7 +305,7 @@ export default function SearchPage() {
                       {podcasts.length !== 1 ? "s" : ""}
                     </p>
                   )}
-                </div>
+                </div> */}
 
                 {/* Search Results */}
                 <SearchResults
