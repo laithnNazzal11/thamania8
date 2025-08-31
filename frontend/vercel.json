@@ -1,4 +1,5 @@
 {
+  "name": "thamanea-podcast",
   "functions": {
     "app/api/search/route.ts": {
       "maxDuration": 10
