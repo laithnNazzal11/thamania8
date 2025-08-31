@@ -104,20 +104,78 @@ export default function SearchResults({ podcasts, loading, error, searchTerm }: 
 
   if (podcasts.length === 0 && searchTerm) {
     return (
-      <div className="w-full max-w-md mx-auto text-center">
-        <div className="bg-[#141523] border border-gray-700 rounded-xl p-8">
-          <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-lg font-semibold text-white mb-2">No Results Found</h3>
-          <p className="text-gray-300 mb-4">
-            No podcasts found for &quot;{searchTerm}&quot;. Try a different search term.
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center max-w-lg mx-auto">
+          {/* Large search icon with purple theme */}
+          <div className="relative mb-8">
+            <div className="w-24 h-24 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-full flex items-center justify-center mx-auto border border-purple-500/30">
+              <svg className="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            {/* Sad face overlay */}
+            <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center border-2 border-[#141523]">
+              <span className="text-gray-400 text-sm">😔</span>
+            </div>
+          </div>
+          
+          {/* Main heading */}
+          <h3 className="text-2xl font-bold text-white mb-3">
+            No results found
+          </h3>
+          
+          {/* Search term display */}
+          <p className="text-gray-300 mb-6 text-lg">
+            No podcasts found for <span className="text-purple-400 font-semibold">&quot;{searchTerm}&quot;</span>
           </p>
-          <div className="text-sm text-gray-400">
-            <p>Try searching for:</p>
-            <ul className="mt-2 space-y-1 text-left">
-              <li>• Podcast names (e.g., &quot;The Daily&quot;)</li>
-              <li>• Artist names (e.g., &quot;Joe Rogan&quot;)</li>
-              <li>• Topics (e.g., &quot;Technology&quot;, &quot;Comedy&quot;)</li>
-            </ul>
+          
+          {/* Suggestions */}
+          <div className="bg-gray-800/30 rounded-2xl p-6 border border-gray-700/50 backdrop-blur-sm">
+            <h4 className="text-white font-semibold mb-4 flex items-center justify-center">
+              <svg className="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014.846 17H9.154a3.374 3.374 0 00-1.145-.553L7.46 15.9z" />
+              </svg>
+              Try searching for:
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="text-center p-3 bg-gray-700/30 rounded-lg">
+                <div className="text-purple-400 font-medium mb-2">Podcast Names</div>
+                <div className="text-gray-400 space-y-1">
+                  <div>&quot;The Daily&quot;</div>
+                  <div>&quot;فنجان&quot;</div>
+                </div>
+              </div>
+              <div className="text-center p-3 bg-gray-700/30 rounded-lg">
+                <div className="text-purple-400 font-medium mb-2">Creator Names</div>
+                <div className="text-gray-400 space-y-1">
+                  <div>&quot;Joe Rogan&quot;</div>
+                  <div>&quot;أحمد الشقيري&quot;</div>
+                </div>
+              </div>
+              <div className="text-center p-3 bg-gray-700/30 rounded-lg">
+                <div className="text-purple-400 font-medium mb-2">Topics</div>
+                <div className="text-gray-400 space-y-1">
+                  <div>&quot;Technology&quot;</div>
+                  <div>&quot;Comedy&quot;</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Quick action buttons */}
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              <button 
+                onClick={() => window.history.back()}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Go Back
+              </button>
+              <button 
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
           </div>
         </div>
       </div>
