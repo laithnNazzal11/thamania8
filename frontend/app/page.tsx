@@ -88,15 +88,14 @@ export default function HomePage() {
         </div>
 
         {/* Navigation */}
-        {/* Navigation */}
         <nav className="flex-1 px-4 space-y-2">
           {/* Main Navigation */}
           <div className="space-y-1">
-                         <a
+             <a
                href="/"
-               className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
+               className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-400 nav-item-hover"
              >
-               <div className="w-6 h-6 flex items-center justify-center">
+               <div className="w-6 h-6 flex items-center justify-center relative z-10">
                  <img
                    src="https://podbay.fm/static/images/menu/home-line.svg"
                    alt="Home"
@@ -104,14 +103,14 @@ export default function HomePage() {
                    height="16"
                  />
                </div>
-               <span className="font-medium text-sm">Home</span>
+               <span className="font-medium text-sm relative z-10">Home</span>
              </a>
  
              <a
                href="#"
-               className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
+               className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-400 nav-item-hover"
              >
-               <div className="w-6 h-6 flex items-center justify-center">
+               <div className="w-6 h-6 flex items-center justify-center relative z-10">
                  <img
                    src="https://podbay.fm/static/images/menu/discover-line.svg"
                    alt="Discover"
@@ -119,7 +118,7 @@ export default function HomePage() {
                    height="14"
                  />
                </div>
-               <span className="text-sm">Discover</span>
+               <span className="text-sm relative z-10">Discover</span>
              </a>
           </div>
 
@@ -131,9 +130,9 @@ export default function HomePage() {
                          <div className="space-y-1">
                <a
                  href="#"
-                 className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
+                 className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-400 nav-item-hover"
                >
-                 <div className="w-6 h-6 flex items-center justify-center">
+                 <div className="w-6 h-6 flex items-center justify-center relative z-10">
                    <img
                      src="https://podbay.fm/static/images/menu/my-queue-line.svg"
                      alt="Queue"
@@ -141,14 +140,14 @@ export default function HomePage() {
                      height="16"
                    />
                  </div>
-                 <span className="text-sm">My Queue</span>
+                 <span className="text-sm relative z-10">My Queue</span>
                </a>
  
                <a
                  href="#"
-                 className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
+                 className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-400 nav-item-hover"
                >
-                 <div className="w-6 h-6 flex items-center justify-center">
+                 <div className="w-6 h-6 flex items-center justify-center relative z-10">
                    <img
                      src="https://podbay.fm/static/images/menu/my-podcasts-line.svg"
                      alt="Podcasts"
@@ -156,14 +155,14 @@ export default function HomePage() {
                      height="16"
                    />
                  </div>
-                 <span className="text-sm">My Podcasts</span>
+                 <span className="text-sm relative z-10">My Podcasts</span>
                </a>
  
                <a
                  href="#"
-                 className="flex items-center space-x-2 px-1 py-1 rounded-lg  hover:text-white hover:bg-gray-800/50"
+                 className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-400 nav-item-hover"
                >
-                 <div className="w-6 h-6 flex items-center justify-center">
+                 <div className="w-6 h-6 flex items-center justify-center relative z-10">
                    <img
                      src="https://podbay.fm/static/images/menu/recents-line.svg"
                      alt="Recents"
@@ -171,7 +170,7 @@ export default function HomePage() {
                      height="16"
                    />
                  </div>
-                 <span className="text-sm">Recents</span>
+                 <span className="text-sm relative z-10">Recents</span>
                </a>
              </div>
           </div>

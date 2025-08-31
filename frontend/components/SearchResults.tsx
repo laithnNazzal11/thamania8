@@ -252,22 +252,21 @@ export default function SearchResults({
       {/* Top Podcasts Section */}
       {topPodcasts.length > 0 && (
         <section>
-          <div className="flex items-center justify-between mb-6">
-
-            <h2 className="text-2xl font-bold text-white">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-md font-bold text-white">
               Top podcasts for {searchTerm}
             </h2>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               {!isGridLayout && (
                 <>
                   <button
                     onClick={() => scrollLeft(podcastsScrollRef)}
-                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    className="rounded-lg transition-colors"
                     aria-label="Scroll left"
                   >
                     <svg
-                      className="w-6 h-6 text-gray-400 hover:text-white"
+                      className="w-5 h-5 text-gray-400 hover:text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -282,11 +281,11 @@ export default function SearchResults({
                   </button>
                   <button
                     onClick={() => scrollRight(podcastsScrollRef)}
-                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    className="rounded-lg transition-colors"
                     aria-label="Scroll right"
                   >
                     <svg
-                      className="w-6 h-6 text-gray-400 hover:text-white"
+                      className="w-5 h-5 text-gray-400 hover:text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -304,7 +303,7 @@ export default function SearchResults({
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setShowDropdown(!showDropdown)}
-                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                  className=" rounded-lg transition-colors"
                   aria-label="More options"
                 >
                   <svg
@@ -359,8 +358,7 @@ export default function SearchResults({
               </div>
             </div>
           </div>
-          <div className="border-b border-gray-700 pb-2 pb-10 w-full"/>
-
+          <div className="border-b border-gray-700 pb-1 mb-4 w-full" />
 
           {/* Podcast cards layout */}
           <div className="relative">
@@ -397,8 +395,7 @@ export default function SearchResults({
               /* Horizontal scrolling layout */
               <div
                 ref={podcastsScrollRef}
-                className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                className="flex space-x-6 overflow-x-auto pb-10 custom-scrollbar"
               >
                 {topPodcasts.map((podcast) => (
                   <div key={podcast.id} className="flex-shrink-0 w-[200px]">
@@ -437,7 +434,7 @@ export default function SearchResults({
       {topEpisodes.length > 0 && (
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white">
+            <h2 className="text-md font-bold text-white">
               Top episodes for {searchTerm}
             </h2>
             <div className="flex items-center space-x-4">
@@ -445,11 +442,11 @@ export default function SearchResults({
                 <>
                   <button
                     onClick={() => scrollLeft(episodesScrollRef)}
-                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    className="rounded-lg transition-colors"
                     aria-label="Scroll left"
                   >
                     <svg
-                      className="w-6 h-6 text-gray-400 hover:text-white"
+                      className="w-5 h-5 text-gray-400 hover:text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -464,11 +461,11 @@ export default function SearchResults({
                   </button>
                   <button
                     onClick={() => scrollRight(episodesScrollRef)}
-                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    className=" rounded-lg transition-colors"
                     aria-label="Scroll right"
                   >
                     <svg
-                      className="w-6 h-6 text-gray-400 hover:text-white"
+                      className="w-5 h-5 text-gray-400 hover:text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -486,7 +483,7 @@ export default function SearchResults({
               <div className="relative" ref={episodesDropdownRef}>
                 <button
                   onClick={() => setShowEpisodesDropdown(!showEpisodesDropdown)}
-                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                  className=" rounded-lg transition-colors"
                   aria-label="More options"
                 >
                   <svg
@@ -565,6 +562,8 @@ export default function SearchResults({
               </div>
             </div>
           </div>
+
+          <div className="border-b border-gray-700 pb-1 mb-4 w-full" />
 
           {/* Episode cards layout */}
           <div className="relative">
@@ -785,8 +784,7 @@ export default function SearchResults({
               /* Horizontal scrolling layout */
               <div
                 ref={episodesScrollRef}
-                className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                className="flex space-x-6 overflow-x-auto pb-10 custom-scrollbar"
               >
                 {topEpisodes.map((podcast) => {
                   // Different background colors for each card - using exact hex colors
