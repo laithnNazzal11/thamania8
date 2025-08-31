@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Podcast } from "@/types";
 import { apiService } from "@/lib/api";
 import SearchForm from "@/components/SearchForm";
 import SearchResults from "@/components/SearchResults";
 
-export default function SearchPage() {
+function SearchPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
@@ -40,8 +40,8 @@ export default function SearchPage() {
     try {
       const response = await apiService.searchPodcasts(term);
       setPodcasts(response.results);
-    } catch (err: any) {
-      setError(err.message || "Failed to search podcasts");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to search podcasts");
       setPodcasts([]);
     } finally {
       setLoading(false);
@@ -328,5 +328,15 @@ export default function SearchPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#141523] flex items-center justify-center">
+      <div className="text-white">Loading...</div>
+    </div>}>
+      <SearchPageContent />
+    </Suspense>
   );
 }
