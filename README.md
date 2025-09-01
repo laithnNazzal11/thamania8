@@ -289,11 +289,6 @@ Fully responsive design working perfectly on all devices
 **Laith Nazzal**  
 Full-Stack Developer | Node.js & React Specialist
 
-- 📧 **Email**: [Contact through GitHub]
-- 💼 **LinkedIn**: [Professional Profile]
-- 🌐 **Portfolio**: [Personal Website]
-- 📱 **GitHub**: [@laithnNazzal11](https://github.com/laithnNazzal11)
-
 ---
 
 ## 📄 **License**
@@ -315,12 +310,5 @@ This project was created as part of a job application assignment for **Thamanea 
 
 ---
 
-<div align="center">
-
-**🎯 Built with ❤️ for Thamanea Job Application**
-
-*Demonstrating full-stack expertise, modern development practices, and attention to detail*
-
-**[📖 View Technical Solution](docs/SOLUTION.md)** • **[🚀 Setup Guide](docs/SETUP.md)** • **[🧪 Test the API](test-api.js)**
 
 </div>
